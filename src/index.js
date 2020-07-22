@@ -44,9 +44,9 @@ const onSuccess = data => {
     var getItemsResponse = ProductAdvertisingAPIv1.GetItemsResponse.constructFromObject(
         data
     );
-    console.log(
-        'Complete Response: \n' + JSON.stringify(getItemsResponse, null, 1)
-    );
+    // console.log(
+    //     'Complete Response: \n' + JSON.stringify(getItemsResponse, null, 1)
+    // );
 
     if (getItemsResponse['Errors'] !== undefined) {
         return JSON.stringify(getItemsResponse['Errors'], null, 1);
@@ -54,60 +54,6 @@ const onSuccess = data => {
 
     if (getItemsResponse['ItemsResult'] !== undefined) {
         return JSON.stringify(getItemsResponse, null, 1);
-        //     console.log('Printing All Item Information in ItemsResult:');
-        //     var response_list = parseResponse(
-        //         getItemsResponse['ItemsResult']['Items']
-        //     );
-        //     for (var i in getItemsRequest['ItemIds']) {
-        //         if (getItemsRequest['ItemIds'].hasOwnProperty(i)) {
-        //             var itemId = getItemsRequest['ItemIds'][i];
-        //             console.log(
-        //                 '\nPrinting information about the Item with Id: ' + itemId
-        //             );
-        //             if (itemId in response_list) {
-        //                 var item = response_list[itemId];
-        //                 if (item !== undefined) {
-        //                     if (item['ASIN'] !== undefined) {
-        //                         console.log('ASIN: ' + item['ASIN']);
-        //                     }
-        //                     if (item['DetailPageURL'] !== undefined) {
-        //                         console.log(
-        //                             'DetailPageURL: ' + item['DetailPageURL']
-        //                         );
-        //                     }
-        //                     if (
-        //                         item['ItemInfo'] !== undefined &&
-        //                         item['ItemInfo']['Title'] !== undefined &&
-        //                         item['ItemInfo']['Title']['DisplayValue'] !==
-        //                             undefined
-        //                     ) {
-        //                         console.log(
-        //                             'Title: ' +
-        //                                 item['ItemInfo']['Title']['DisplayValue']
-        //                         );
-        //                     }
-        //                     if (
-        //                         item['Offers'] !== undefined &&
-        //                         item['Offers']['Listings'] !== undefined &&
-        //                         item['Offers']['Listings'][0]['Price'] !==
-        //                             undefined &&
-        //                         item['Offers']['Listings'][0]['Price'][
-        //                             'DisplayAmount'
-        //                         ] !== undefined
-        //                     ) {
-        //                         console.log(
-        //                             'Buying Price: ' +
-        //                                 item['Offers']['Listings'][0]['Price'][
-        //                                     'DisplayAmount'
-        //                                 ]
-        //                         );
-        //                     }
-        //                 }
-        //             } else {
-        //                 console.log('Item not found, check errors');
-        //             }
-        //         }
-        //     }
     }
 };
 
