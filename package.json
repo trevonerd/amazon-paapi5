@@ -1,6 +1,6 @@
 {
     "name": "amazon-paapi5",
-    "version": "0.0.0-alpha.3",
+    "version": "0.0.0-alpha.4",
     "description": "ProductAdvertisingAPI 5.0 Client",
     "main": "lib/index.js",
     "license": "ISC",

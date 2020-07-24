@@ -39,7 +39,7 @@ const parseResponse = itemsResponseList => {
     return mappedResponse;
 };
 
-const onSuccess = data => {
+const getItemsOnSuccess = data => {
     console.log('API called successfully.');
     var getItemsResponse = ProductAdvertisingAPIv1.GetItemsResponse.constructFromObject(
         data
@@ -54,6 +54,25 @@ const onSuccess = data => {
 
     if (getItemsResponse['ItemsResult'] !== undefined) {
         return JSON.stringify(getItemsResponse, null, 1);
+    }
+};
+
+const getVariationsOnSuccess = data => {
+    console.log('API called successfully.');
+    var getVariationsResponse = ProductAdvertisingAPIv1.GetVariationsResponse.constructFromObject(
+        data
+    );
+
+    // console.log(
+    //     'Complete Response: \n' + JSON.stringify(getVariationsResponse, null, 1)
+    // );
+
+    if (getVariationsResponse['Errors'] !== undefined) {
+        return JSON.stringify(getVariationsResponse['Errors'], null, 1);
+    }
+
+    if (getVariationsResponse['VariationsResult'] !== undefined) {
+        return JSON.stringify(getVariationsResponse, null, 1);
     }
 };
 
@@ -89,7 +108,7 @@ class AmazonProductAPI {
          * Choose resources you want from GetItemsResource enum
          * For more details, refer: https://'webservices.amazon.com/pa'api5/documentation/get-items.html#resources-parameter
          */
-        resources = [
+        getItemResources = [
             'BrowseNodeInfo.BrowseNodes',
             'BrowseNodeInfo.BrowseNodes.Ancestor',
             // 'BrowseNodeInfo.BrowseNodes.SalesRank',
@@ -125,6 +144,53 @@ class AmazonProductAPI {
             // 'Offers.Summaries.LowestPrice',
             // 'Offers.Summaries.OfferCount',
         ],
+        getVariationsResources = [
+            'BrowseNodeInfo.BrowseNodes',
+            'BrowseNodeInfo.BrowseNodes.Ancestor',
+            'BrowseNodeInfo.BrowseNodes.SalesRank',
+            'BrowseNodeInfo.WebsiteSalesRank',
+            'Images.Primary.Small',
+            'Images.Primary.Medium',
+            'Images.Primary.Large',
+            'Images.Variants.Small',
+            'Images.Variants.Medium',
+            'Images.Variants.Large',
+            'ItemInfo.ByLineInfo',
+            'ItemInfo.Classifications',
+            'ItemInfo.ContentInfo',
+            'ItemInfo.ContentRating',
+            'ItemInfo.ExternalIds',
+            'ItemInfo.Features',
+            'ItemInfo.ManufactureInfo',
+            'ItemInfo.ProductInfo',
+            'ItemInfo.TechnicalInfo',
+            'ItemInfo.Title',
+            'ItemInfo.TradeInInfo',
+            'Offers.Listings.Availability.MaxOrderQuantity',
+            'Offers.Listings.Availability.Message',
+            'Offers.Listings.Availability.MinOrderQuantity',
+            'Offers.Listings.Availability.Type',
+            'Offers.Listings.Condition',
+            'Offers.Listings.Condition.SubCondition',
+            'Offers.Listings.DeliveryInfo.IsAmazonFulfilled',
+            'Offers.Listings.DeliveryInfo.IsFreeShippingEligible',
+            'Offers.Listings.DeliveryInfo.IsPrimeEligible',
+            'Offers.Listings.IsBuyBoxWinner',
+            'Offers.Listings.LoyaltyPoints.Points',
+            'Offers.Listings.MerchantInfo',
+            'Offers.Listings.Price',
+            'Offers.Listings.ProgramEligibility.IsPrimeExclusive',
+            'Offers.Listings.ProgramEligibility.IsPrimePantry',
+            'Offers.Listings.Promotions',
+            'Offers.Listings.SavingBasis',
+            'Offers.Summaries.HighestPrice',
+            'Offers.Summaries.LowestPrice',
+            'Offers.Summaries.OfferCount',
+            'ParentASIN',
+            'VariationSummary.Price.HighestPrice',
+            'VariationSummary.Price.LowestPrice',
+            'VariationSummary.VariationDimension',
+        ],
     }) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
@@ -132,7 +198,8 @@ class AmazonProductAPI {
         this.region = countries[country].region;
         this.partnerTag = partnerTag;
         this.partnerType = partnerType;
-        this.resources = resources;
+        this.getItemResources = getItemResources;
+        this.getVariationsResources = getVariationsResources;
         this.api = null;
     }
 
@@ -165,12 +232,42 @@ class AmazonProductAPI {
             PartnerType: this.partnerType,
             ItemIds: itemIds,
             Condition: condition,
-            Resources: this.resources,
+            Resources: this.getItemResources,
         };
 
         return this.api.getItems(getItemsRequest).then(function (data) {
-            return onSuccess(data);
+            return getItemsOnSuccess(data);
         });
+    };
+
+    getVariations = async ({ asin }) => {
+        if (!this.api) {
+            console.error('ProductApi.init() missing...');
+            return;
+        }
+        if (!asin) {
+            console.error('ASIN is required!');
+            return;
+        }
+
+        let getVariationsRequest = new ProductAdvertisingAPIv1.GetVariationsRequest();
+
+        getVariationsRequest = {
+            PartnerTag: this.partnerTag,
+            PartnerType: this.partnerType,
+            ASIN: asin,
+            Condition: 'New',
+            Resources: this.getVariationsResources,
+        };
+
+        return this.api
+            .getVariations(getVariationsRequest)
+            .then(function (data) {
+                return getVariationsOnSuccess(data);
+            })
+            .catch(err => {
+                return err.message;
+            });
     };
 }
 
