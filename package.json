@@ -25,16 +25,16 @@
         "fs": false
     },
     "dependencies": {
-        "@babel/runtime": "^7.10.5",
+        "@babel/runtime": "^7.12.17",
         "crypto-js": "^4.0.0",
         "superagent": "5.3.1"
     },
     "devDependencies": {
-        "@babel/cli": "^7.10.5",
-        "@babel/core": "^7.10.5",
+        "@babel/cli": "^7.12.17",
+        "@babel/core": "^7.12.17",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
-        "@babel/plugin-transform-runtime": "^7.10.5",
-        "@babel/preset-env": "^7.10.4",
+        "@babel/plugin-transform-runtime": "^7.12.17",
+        "@babel/preset-env": "^7.12.17",
         "eslint": "^7.5.0",
         "expect.js": "~0.3.1",
         "mocha": "~8.0.1",
