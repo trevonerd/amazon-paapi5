@@ -25,13 +25,13 @@
         "fs": false
     },
     "dependencies": {
-        "@babel/runtime": "^7.10.5",
+        "@babel/runtime": "^7.17.2",
         "crypto-js": "^4.0.0",
         "superagent": "5.3.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",
-        "@babel/core": "^7.10.5",
+        "@babel/core": "^7.17.2",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
         "@babel/plugin-transform-runtime": "^7.10.5",
         "@babel/preset-env": "^7.10.4",
